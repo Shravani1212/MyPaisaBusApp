@@ -1,0 +1,22 @@
+{
+  "TITLE": "MyPaisaa Bus",
+  "SUBTITLE": "Premium Bus Booking System",
+  "BOOK_TICKET": "Book Ticket",
+  "TRACK_BOARDING": "Boarding Tracking",
+  "JOURNEY_DETAILS": "Journey Details",
+  "TRAVEL_DATE": "Travel Date",
+  "MOBILE_NUMBER": "Mobile Number",
+  "AVAILABLE": "Available",
+  "SELECTED": "Selected",
+  "BOOKED": "Booked",
+  "PROCEED_BOOK": "Proceed to Book",
+  "FRONT": "FRONT (ENGINE)",
+  "REAR": "REAR",
+  "CONFIRMATION": "Booking Confirmed!",
+  "BOOKING_ID": "Booking ID",
+  "SEATS": "Seats",
+  "READY": "Ready",
+  "MARK_BOARDED": "Mark Boarded",
+  "WAITING": "Waiting",
+  "OPTIMAL_RULE": "Optimal Sequence Rule"
+}

@@ -1,0 +1,22 @@
+{
+  "TITLE": "मायपैसा बस",
+  "SUBTITLE": "प्रीमियम बस बुकिंग सिस्टम",
+  "BOOK_TICKET": "टिकट बुक करें",
+  "TRACK_BOARDING": "बोर्डिंग ट्रैकिंग",
+  "JOURNEY_DETAILS": "यात्रा विवरण",
+  "TRAVEL_DATE": "यात्रा की तारीख",
+  "MOBILE_NUMBER": "मोबाइल नंबर",
+  "AVAILABLE": "उपलब्ध",
+  "SELECTED": "चयनित",
+  "BOOKED": "बुक किया गया",
+  "PROCEED_BOOK": "बुकिंग के लिए आगे बढ़ें",
+  "FRONT": "आगे (इंजन)",
+  "REAR": "पीछे",
+  "CONFIRMATION": "बुकिंग की पुष्टि हो गई!",
+  "BOOKING_ID": "बुकिंग आईडी",
+  "SEATS": "सीटें",
+  "READY": "तैयार",
+  "MARK_BOARDED": "बोर्डेड चिह्नित करें",
+  "WAITING": "प्रतीक्षा",
+  "OPTIMAL_RULE": "इष्टतम अनुक्रम नियम"
+}
