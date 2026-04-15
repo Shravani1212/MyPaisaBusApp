@@ -18,15 +18,16 @@
 .seat {
   width: 50px;
   height: 50px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 0.8em;
+  font-size: 0.85em;
   font-weight: 600;
+  color: var(--text-primary);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   user-select: none;
 }
@@ -214,4 +215,26 @@ td {
 @media (max-width: 900px) {
   .bus-layout { grid-template-columns: repeat(2, 40px) 20px repeat(2, 40px); }
   .seat { width: 40px; height: 40px; font-size: 0.7em; }
+}
+
+/* Theme specific overrides for seat visibility */
+[data-theme='tricolor'] .seat {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+[data-theme='nature'] .seat {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Invert date picker icon for dark theme visibility (Pure White) */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(1);
+}
+
+[data-theme='tricolor'] input[type="date"]::-webkit-calendar-picker-indicator,
+[data-theme='nature'] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0);
 }

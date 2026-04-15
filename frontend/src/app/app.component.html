@@ -5,7 +5,9 @@
       <div class="logo-icon">🚌</div>
       <div>
         <h2 style="margin: 0; font-size: 1.4em; color: var(--text-primary);">Go Bus</h2>
-        <p style="margin: 0; font-size: 0.75em; color: var(--text-secondary); letter-spacing: 1px; text-transform: uppercase;">Bus Services</p>
+        <p
+          style="margin: 0; font-size: 0.75em; color: var(--text-secondary); letter-spacing: 1px; text-transform: uppercase;">
+          Bus Services</p>
       </div>
     </div>
 
@@ -13,18 +15,19 @@
       <div class="menu-item" [class.active]="activeTab === 'home'" (click)="activeTab = 'home'">
         <span>🏠</span> {{t('HOME') || 'Dashboard'}}
       </div>
-      
+
       <div *ngIf="currentUser" class="menu-item" [class.active]="activeTab === 'book'" (click)="activeTab = 'book'">
         <span>🎟️</span> {{t('BOOK_NOW') || 'Seat Map'}}
       </div>
-      <div *ngIf="currentUser" class="menu-item" [class.active]="activeTab === 'list'" (click)="activeTab = 'list'; loadBookings()">
+      <div *ngIf="currentUser" class="menu-item" [class.active]="activeTab === 'list'"
+        (click)="activeTab = 'list'; loadBookings()">
         <span>📋</span> {{t('BOARDING_LIST') || 'Manifest'}}
       </div>
-      
+
       <div *ngIf="!currentUser" class="menu-item" (click)="activeTab = 'auth'">
         <span>🔒</span> {{t('LOGIN_TO_ACCESS') || 'Auth Access'}}
       </div>
-      
+
       <div class="menu-item" (click)="showChat = true">
         <span>💬</span> {{t('HELP_CENTER') || 'Support'}}
       </div>
@@ -36,13 +39,13 @@
             <path id="transitPath" class="route-path" d="M 20 70 Q 70 30 140 70 T 260 70" />
             <circle class="city-dot" cx="20" cy="70" r="3" />
             <text class="city-label" x="20" y="90" text-anchor="middle">HYD</text>
-            
+
             <circle class="city-dot" cx="100" cy="55" r="3" />
             <text class="city-label" x="100" y="40" text-anchor="middle">VJA</text>
-            
+
             <circle class="city-dot" cx="180" cy="55" r="3" />
             <text class="city-label" x="180" y="40" text-anchor="middle">VSKP</text>
-            
+
             <circle class="city-dot" cx="260" cy="70" r="3" />
             <text class="city-label" x="260" y="90" text-anchor="middle">BLR</text>
           </svg>
@@ -61,63 +64,79 @@
     <!-- TOP BAR -->
     <header class="top-bar">
       <div style="display: flex; align-items: center; gap: 20px;">
-        <div class="mobile-toggle" (click)="isSidebarOpen = !isSidebarOpen" style="cursor: pointer; font-size: 24px;">☰</div>
-        <div class="breadcrumb" style="font-size: 0.85em; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">
-           {{activeTab}} Overview
+        <div class="mobile-toggle" (click)="isSidebarOpen = !isSidebarOpen" style="cursor: pointer; font-size: 24px;">☰
+        </div>
+        <div class="breadcrumb"
+          style="font-size: 0.85em; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">
+          {{activeTab}} Overview
         </div>
       </div>
 
       <div style="display: flex; gap: 24px; align-items: center;">
-        <select [ngModel]="theme.getTheme()" (ngModelChange)="changeTheme($event)" style="background: rgba(0,0,0,0.1); border: none; padding: 8px 12px; border-radius: 10px; font-weight: 600; color: var(--text-primary);">
+        <select [ngModel]="theme.getTheme()" (ngModelChange)="changeTheme($event)"
+          style="background: rgba(0,0,0,0.1); border: none; padding: 8px 12px; border-radius: 10px; font-weight: 600; color: var(--text-primary);">
           <option value="premium">Premium Mode</option>
           <option value="tricolor">🇮🇳 Tricolor</option>
           <option value="nature">🌿 Eco Nature</option>
         </select>
 
         <div class="user-profile" *ngIf="currentUser" style="display: flex; align-items: center; gap: 12px;">
-          <div style="width: 38px; height: 38px; border-radius: 14px; background: var(--header-grad); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">{{currentUser.username.substring(0,1).toUpperCase()}}</div>
+          <div
+            style="width: 38px; height: 38px; border-radius: 14px; background: var(--header-grad); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            {{currentUser.username.substring(0,1).toUpperCase()}}</div>
           <div style="line-height: 1.1;">
             <p style="margin: 0; font-size: 0.9em; font-weight: 600;">{{currentUser.username}}</p>
-            <span (click)="logout()" style="font-size: 0.75em; color: var(--danger); cursor: pointer; text-decoration: underline;">Logout</span>
+            <span (click)="logout()"
+              style="font-size: 0.75em; color: var(--danger); cursor: pointer; text-decoration: underline;">Logout</span>
           </div>
         </div>
-        <button *ngIf="!currentUser" class="btn btn-primary" style="padding: 10px 24px;" (click)="activeTab = 'auth'">Sign In</button>
+        <button *ngIf="!currentUser" class="btn btn-primary" style="padding: 10px 24px;"
+          (click)="activeTab = 'auth'">Sign In</button>
       </div>
     </header>
 
     <!-- CONTENT BODY -->
     <div class="content-body">
-      
+
       <!-- HOME -->
       <main *ngIf="activeTab === 'home'" class="fade-in">
         <section class="glass-card" style="margin-bottom: 40px; position: relative;">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 40px;">
             <div style="flex: 1; min-width: 300px;">
-              <h2 style="font-size: 3.2em; margin: 0; line-height: 1; color: var(--text-primary);">Seamless <br><span style="background: var(--header-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Transit.</span></h2>
-              <p style="margin: 24px 0 35px; color: var(--text-secondary); font-size: 1.2em; line-height: 1.6;">AI-driven boarding optimization and real-time fleet intelligence for a smarter India.</p>
-              <button class="btn btn-primary" (click)="scrollToSearch()" style="padding: 18px 36px; font-size: 1.1em;">Start New Booking</button>
+              <h2 style="font-size: 3.2em; margin: 0; line-height: 1; color: var(--text-primary);">Seamless <br><span
+                  style="background: var(--header-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Transit.</span>
+              </h2>
+              <p style="margin: 24px 0 35px; color: var(--text-secondary); font-size: 1.2em; line-height: 1.6;">
+                AI-driven boarding optimization and real-time fleet intelligence for a smarter India.</p>
+              <button class="btn btn-primary" (click)="scrollToSearch()"
+                style="padding: 18px 36px; font-size: 1.1em;">Start New Booking</button>
             </div>
             <div style="flex: 1; min-width: 300px;">
-              <div class="glass-card" style="border: 2px solid rgba(255,255,255,0.1); padding: 40px; background: rgba(0,0,0,0.2); position: relative;">
-                <h4 style="margin: 0; color: var(--primary-color); text-transform: uppercase; letter-spacing: 2px;">Live Transit Intelligence</h4>
-                <div class="curved-route-container" style="height: 180px; margin-top: 20px; border: none; background: none;">
+              <div class="glass-card"
+                style="border: 2px solid rgba(255,255,255,0.1); padding: 40px; background: rgba(0,0,0,0.2); position: relative;">
+                <h4 style="margin: 0; color: var(--primary-color); text-transform: uppercase; letter-spacing: 2px;">Live
+                  Transit Intelligence</h4>
+                <div class="curved-route-container"
+                  style="height: 180px; margin-top: 20px; border: none; background: none;">
                   <svg class="route-svg" viewBox="0 0 400 150" preserveAspectRatio="xMidYMid meet">
                     <path class="route-path" d="M 50 100 Q 150 20 250 100 T 350 100" stroke-width="3" />
                     <circle class="city-dot" cx="50" cy="100" r="4" />
                     <text class="city-label" x="50" y="125" text-anchor="middle" style="font-size: 10px;">HYD</text>
-                    
+
                     <circle class="city-dot" cx="150" cy="60" r="4" />
                     <text class="city-label" x="150" y="45" text-anchor="middle" style="font-size: 10px;">VJA</text>
-                    
+
                     <circle class="city-dot" cx="250" cy="60" r="4" />
                     <text class="city-label" x="250" y="45" text-anchor="middle" style="font-size: 10px;">VSKP</text>
-                    
+
                     <circle class="city-dot" cx="350" cy="100" r="4" />
                     <text class="city-label" x="350" y="125" text-anchor="middle" style="font-size: 10px;">BLR</text>
                   </svg>
-                  <div class="moving-bus" style="offset-path: path('M 50 100 Q 150 20 250 100 T 350 100'); font-size: 32px;">🚌</div>
+                  <div class="moving-bus"
+                    style="offset-path: path('M 50 100 Q 150 20 250 100 T 350 100'); font-size: 32px;">🚌</div>
                 </div>
-                <p style="margin: 15px 0 0; font-size: 0.85em; opacity: 0.7; text-align: center;">Active routes monitored by Go Bus AI.</p>
+                <p style="margin: 15px 0 0; font-size: 0.85em; opacity: 0.7; text-align: center;">Active routes
+                  monitored by Go Bus AI.</p>
               </div>
             </div>
           </div>
@@ -126,32 +145,37 @@
         <section id="search-section" class="glass-card">
           <h3 style="margin-top: 0; margin-bottom: 30px;">Quick Search</h3>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px;">
-          <div class="input-group">
-            <label>📍 From</label>
-            <input type="text" [(ngModel)]="search.from" placeholder="Source City">
+            <div class="input-group">
+              <label>📍 From</label>
+              <input type="text" [(ngModel)]="search.from" placeholder="Source City">
+            </div>
+            <div class="input-group">
+              <label>🏁 To</label>
+              <input type="text" [(ngModel)]="search.to" placeholder="Destination">
+            </div>
+            <div class="input-group">
+              <label>📅 Date</label>
+              <input type="date" [(ngModel)]="search.date" (ngModelChange)="loadBookings()">
+            </div>
+            <div style="display: flex; align-items: flex-end;">
+              <button class="btn btn-primary" style="width: 100%; padding: 16px;" (click)="onSearch()">Search
+                Buses</button>
+            </div>
           </div>
-          <div class="input-group">
-            <label>🏁 To</label>
-            <input type="text" [(ngModel)]="search.to" placeholder="Destination">
-          </div>
-          <div class="input-group">
-            <label>📅 Date</label>
-            <input type="date" [(ngModel)]="search.date">
-          </div>
-          <div style="display: flex; align-items: flex-end;">
-            <button class="btn btn-primary" style="width: 100%; padding: 16px;" (click)="onSearch()">Search Buses</button>
-          </div>
-        </div>
         </section>
 
         <section *ngIf="search.from && search.to" style="margin-top: 40px;" class="fade-in">
           <h3 style="margin-bottom: 25px;">Available Schedules</h3>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px;">
-            <div *ngFor="let bus of availableBuses" class="glass-card" style="padding: 25px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--primary-color);">
+            <div *ngFor="let bus of availableBuses" class="glass-card"
+              style="padding: 25px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--primary-color);">
               <div>
                 <h4 style="margin: 0; font-size: 1.3em;">{{bus.name}}</h4>
-                <p style="margin: 5px 0; color: var(--text-secondary); font-size: 0.9em;">📍 {{search.from}} → {{travelDate}} • {{bus.type}}</p>
-                <span style="display: inline-block; background: rgba(34, 197, 94, 0.1); color: var(--success); padding: 4px 10px; border-radius: 6px; font-size: 0.8em; font-weight: 600; margin-top: 8px;">Departure: {{bus.time}}</span>
+                <p style="margin: 5px 0; color: var(--text-secondary); font-size: 0.9em;">📍 {{search.from}} →
+                  {{travelDate}} • {{bus.type}}</p>
+                <span
+                  style="display: inline-block; background: rgba(34, 197, 94, 0.1); color: var(--success); padding: 4px 10px; border-radius: 6px; font-size: 0.8em; font-weight: 600; margin-top: 8px;">Departure:
+                  {{bus.time}}</span>
               </div>
               <div style="text-align: right;">
                 <p style="font-size: 1.6em; font-weight: 700; margin: 0; color: var(--primary-color);">{{bus.price}}</p>
@@ -168,20 +192,28 @@
           <div style="text-align: center; margin-bottom: 40px;">
             <div class="logo-icon" style="margin: 0 auto 20px;">👤</div>
             <h2 style="margin: 0;">{{authMode === 'login' ? 'Welcome Back' : 'Create Account'}}</h2>
-            <p style="color: var(--text-secondary); font-size: 0.9em; margin-top: 8px;">Enter your credentials to access your dashboard</p>
+            <p style="color: var(--text-secondary); font-size: 0.9em; margin-top: 8px;">Enter your credentials to access
+              your dashboard</p>
           </div>
-          <div class="input-group" style="margin-bottom: 24px;"><label>Username</label><input type="text" [(ngModel)]="authData.username"></div>
-          <div class="input-group" style="margin-bottom: 24px;" *ngIf="authMode === 'signup'"><label>Email</label><input type="email" [(ngModel)]="authData.email"></div>
-          <div class="input-group" style="margin-bottom: 40px;"><label>Password</label><input type="password" [(ngModel)]="authData.password"></div>
-          
+          <div class="input-group" style="margin-bottom: 24px;"><label>Username</label><input type="text"
+              [(ngModel)]="authData.username"></div>
+          <div class="input-group" style="margin-bottom: 24px;" *ngIf="authMode === 'signup'"><label>Email</label><input
+              type="email" [(ngModel)]="authData.email"></div>
+          <div class="input-group" style="margin-bottom: 40px;"><label>Password</label><input type="password"
+              [(ngModel)]="authData.password"></div>
+
           <!-- DUMMY CREDENTIALS HINT -->
-          <div *ngIf="authMode === 'login'" style="background: rgba(99, 102, 241, 0.1); padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85em; border: 1px dashed var(--primary-color);">
+          <div *ngIf="authMode === 'login'"
+            style="background: rgba(99, 102, 241, 0.1); padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85em; border: 1px dashed var(--primary-color);">
             <p style="margin: 0; color: var(--text-primary);"><b>Demo Login:</b> admin / admin123</p>
           </div>
-          <button class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1em;" (click)="handleAuth()">{{authMode === 'login' ? 'Sign In' : 'Join Network'}}</button>
+          <button class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1em;"
+            (click)="handleAuth()">{{authMode === 'login' ? 'Sign In' : 'Join Network'}}</button>
           <p style="text-align: center; margin-top: 30px; font-size: 0.95em; color: var(--text-secondary);">
             {{authMode === 'login' ? "Don't have an account?" : "Already a member?"}}
-            <span (click)="authMode = (authMode === 'login' ? 'signup' : 'login')" style="color: var(--primary-color); cursor: pointer; font-weight: 600; text-decoration: underline;">Switch to {{authMode === 'login' ? 'Signup' : 'Login'}}</span>
+            <span (click)="authMode = (authMode === 'login' ? 'signup' : 'login')"
+              style="color: var(--primary-color); cursor: pointer; font-weight: 600; text-decoration: underline;">Switch
+              to {{authMode === 'login' ? 'Signup' : 'Login'}}</span>
           </p>
         </div>
       </main>
@@ -192,19 +224,24 @@
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
             <div>
               <h2 style="margin: 0;">{{selectedBus?.name || 'Bus Layout'}}</h2>
-              <p style="color: var(--text-secondary); font-size: 1.1em;">{{search.from}} → {{search.to}} | {{travelDate}}</p>
+              <p style="color: var(--text-secondary); font-size: 1.1em;">{{search.from}} → {{search.to}} |
+                {{travelDate}}</p>
             </div>
-            <div *ngIf="selectedSeats.length > 0" class="glass-card" style="padding: 15px 30px; background: var(--success); color: white; border: none; transform: scale(1.1);">
+            <div *ngIf="selectedSeats.length > 0" class="glass-card"
+              style="padding: 15px 30px; background: var(--success); color: white; border: none; transform: scale(1.1);">
               <span style="font-weight: 300;">TOTAL:</span> ₹{{selectedSeats.length * 850}}
             </div>
           </div>
 
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 50px;">
-            <div style="background: #1e293b; padding: 40px; border-radius: 24px; display: inline-grid; grid-template-columns: repeat(5, 48px); gap: 14px; justify-content: center; box-shadow: inset 0 4px 20px rgba(0,0,0,0.4);">
+            <div
+              style="background: #1e293b; padding: 40px; border-radius: 24px; display: inline-grid; grid-template-columns: repeat(5, 48px); gap: 14px; justify-content: center; box-shadow: inset 0 4px 20px rgba(0,0,0,0.4);">
               <ng-container *ngFor="let row of rows">
-                <div *ngFor="let col of ['A', 'B']" class="seat" [class.selected]="isSelected(row + col)" [class.booked]="isBooked(row + col)" (click)="toggleSeat(row + col)">{{row}}{{col}}</div>
+                <div *ngFor="let col of ['A', 'B']" class="seat" [class.selected]="isSelected(row + col)"
+                  [class.booked]="isBooked(row + col)" (click)="toggleSeat(row + col)">{{row}}{{col}}</div>
                 <div style="width: 30px;"></div>
-                <div *ngFor="let col of ['C', 'D']" class="seat" [class.selected]="isSelected(row + col)" [class.booked]="isBooked(row + col)" (click)="toggleSeat(row + col)">{{row}}{{col}}</div>
+                <div *ngFor="let col of ['C', 'D']" class="seat" [class.selected]="isSelected(row + col)"
+                  [class.booked]="isBooked(row + col)" (click)="toggleSeat(row + col)">{{row}}{{col}}</div>
               </ng-container>
             </div>
 
@@ -215,10 +252,14 @@
                 <input type="tel" [(ngModel)]="mobileNumber" placeholder="10-digit Mobile Number" maxlength="10">
               </div>
               <div class="glass-card" style="padding: 20px; background: rgba(99, 102, 241, 0.05); margin-bottom: 30px;">
-                <p style="margin: 0; font-size: 0.95em;">Selected: <span style="color: var(--primary-color); font-weight: 600;">{{selectedSeats.join(', ') || 'Select Seats'}}</span></p>
-                <small style="color: var(--text-secondary); display: block; margin-top: 8px;">Compliance: Max 6 seats per transaction.</small>
+                <p style="margin: 0; font-size: 0.95em;">Selected: <span
+                    style="color: var(--primary-color); font-weight: 600;">{{selectedSeats.join(', ') || 'Select
+                    Seats'}}</span></p>
+                <small style="color: var(--text-secondary); display: block; margin-top: 8px;">Compliance: Max 6 seats
+                  per transaction.</small>
               </div>
-              <button class="btn btn-primary" style="width: 100%; padding: 20px; font-size: 1.1em;" (click)="bookTickets()" [disabled]="selectedSeats.length === 0">Finalize Journey</button>
+              <button class="btn btn-primary" style="width: 100%; padding: 20px; font-size: 1.1em;"
+                (click)="bookTickets()" [disabled]="selectedSeats.length === 0">Finalize Journey</button>
             </div>
           </div>
         </div>
@@ -231,36 +272,53 @@
             <h2 style="margin: 0;">Boarding Manifest</h2>
             <div style="display: flex; gap: 15px; align-items: center;">
               <span style="font-size: 0.9em; font-weight: 600; opacity: 0.6;">JOURNEY DATE:</span>
-              <input type="date" [(ngModel)]="listDate" (change)="loadBookings()" style="width: auto; padding: 10px 20px;">
+              <input type="date" [(ngModel)]="listDate" (ngModelChange)="loadBookings()" style="width: auto; padding: 10px 20px; min-width: 150px;">
             </div>
           </div>
           <div style="overflow-x: auto;">
             <table style="width: 100%; border-collapse: separate; border-spacing: 0 10px;">
               <thead>
-                <tr style="color: var(--text-secondary); text-transform: uppercase; font-size: 0.8em; letter-spacing: 1px;">
-                  <th style="padding: 10px 20px;">PRIORITY</th><th>PNR ID</th><th>ASSIGNED SEATS</th><th>MOBILE</th><th>STATUS</th><th>ACTIONS</th>
+                <tr
+                  style="color: var(--text-secondary); text-transform: uppercase; font-size: 0.8em; letter-spacing: 1px;">
+                  <th style="padding: 10px 20px;">PRIORITY</th>
+                  <th>PNR ID</th>
+                  <th>ASSIGNED SEATS</th>
+                  <th>MOBILE</th>
+                  <th>STATUS</th>
+                  <th>ACTIONS</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let b of bookings; let i = index" [class.boarded-row]="b.boarded" style="background: rgba(0,0,0,0.02);">
-                  <td style="padding: 20px; border-radius: 12px 0 0 12px;"><span class="seq-badge" style="background: var(--primary-color); color: white; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">{{i+1}}</span></td>
-                  <td style="font-family: monospace; font-weight: 700; color: var(--primary-color);">{{b.id?.substring(0,8)}}</td>
+                <tr *ngFor="let b of bookings; let i = index" [class.boarded-row]="b.boarded"
+                  style="background: rgba(0,0,0,0.02);">
+                  <td style="padding: 20px; border-radius: 12px 0 0 12px;"><span class="seq-badge"
+                      style="background: var(--primary-color); color: white; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">{{i+1}}</span>
+                  </td>
+                  <td style="font-family: monospace; font-weight: 700; color: var(--primary-color);">
+                    {{b.id?.substring(0,8)}}</td>
                   <td>
                     <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                      <span *ngFor="let seat of b.seats" style="background: var(--header-grad); color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.75em; font-weight: 600;">{{seat}}</span>
-                      <span *ngIf="!b.seats || b.seats.length === 0" style="color: var(--text-secondary); opacity: 0.5;">No seats</span>
+                      <span *ngFor="let seat of b.seats"
+                        style="background: var(--header-grad); color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.75em; font-weight: 600;">{{seat}}</span>
+                      <span *ngIf="!b.seats || b.seats.length === 0"
+                        style="color: var(--text-secondary); opacity: 0.5;">No seats</span>
                     </div>
                   </td>
                   <td>
                     <div style="display: flex; align-items: center; gap: 8px;">
-                      <span style="font-size: 1.1em;">📞</span>
-                      <span style="font-weight: 600; font-family: 'Courier New', Courier, monospace; letter-spacing: 1px;">{{b.mobileNumber}}</span>
+                      <a [href]="'tel:' + b.mobileNumber"
+                        style="text-decoration: none; font-size: 1.1em; cursor: pointer;">📞</a>
+                      <span
+                        style="font-weight: 600; font-family: 'Courier New', Courier, monospace; letter-spacing: 1px;">{{b.mobileNumber}}</span>
                     </div>
                   </td>
-                  <td><span class="badge" [class.badge-success]="b.boarded" style="font-size: 0.75em;">{{b.boarded ? 'Success' : 'Awaiting'}}</span></td>
+                  <td><span class="badge" [class.badge-success]="b.boarded" style="font-size: 0.75em;">{{b.boarded ?
+                      'Success' : 'Awaiting'}}</span></td>
                   <td style="border-radius: 0 12px 12px 0;">
-                    <button *ngIf="!b.boarded" (click)="markBoarded(b)" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.85em;">Confirm Boarding</button>
-                    <button (click)="shareWhatsApp(b)" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85em; margin-left: 10px;">📞 Share Info</button>
+                    <button *ngIf="!b.boarded" (click)="markBoarded(b)" class="btn btn-primary"
+                      style="padding: 8px 16px; font-size: 0.85em;">Confirm Boarding</button>
+                    <button (click)="shareWhatsApp(b)" class="btn btn-outline"
+                      style="padding: 8px 16px; font-size: 0.85em; margin-left: 10px;">📞 Share Info</button>
                   </td>
                 </tr>
               </tbody>
@@ -271,10 +329,12 @@
 
     </div>
     <!-- FOOTER -->
-    <footer style="margin-top: 60px; padding: 40px; border-top: 1px solid rgba(0,0,0,0.05); display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; background: rgba(0,0,0,0.01);">
+    <footer
+      style="margin-top: 60px; padding: 40px; border-top: 1px solid rgba(0,0,0,0.05); display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; background: rgba(0,0,0,0.01);">
       <div>
         <h4 style="color: var(--primary-color); margin-top: 0;">Go Bus</h4>
-        <p style="font-size: 0.85em; color: var(--text-secondary);">The future of safe and optimized transit tracking.</p>
+        <p style="font-size: 0.85em; color: var(--text-secondary);">The future of safe and optimized transit tracking.
+        </p>
       </div>
       <div>
         <h4 style="font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px;">Support</h4>
@@ -290,40 +350,63 @@
   </div>
 
   <!-- CONFIRMATION MODAL -->
-  <div *ngIf="showConfirmation" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 3000;">
-    <div class="glass-card fade-in" style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border: 2px solid var(--success);">
+  <div *ngIf="showConfirmation"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 3000;">
+    <div class="glass-card fade-in"
+      style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border: 2px solid var(--success);">
       <div style="font-size: 4em; margin-bottom: 10px;">✅</div>
       <h2 style="color: var(--success); margin-top: 0;">Booked Successfully!</h2>
       <p style="color: var(--text-secondary); margin-bottom: 20px;">Your journey details are confirmed.</p>
-      
-      <div style="background: rgba(0,0,0,0.05); padding: 15px; border-radius: 12px; margin-bottom: 25px; text-align: left; border: 1px solid rgba(255,255,255,0.1);">
-        <p style="margin: 8px 0; font-size: 0.95em;"><span style="color: var(--text-secondary); display: inline-block; width: 80px;">Booking ID:</span> <b>{{lastBooking?.id?.substring(0,8) || 'GO-BUS-123'}}</b></p>
-        <p style="margin: 8px 0; font-size: 0.95em;"><span style="color: var(--text-secondary); display: inline-block; width: 80px;">Seats:</span> <b>{{lastBooking?.seats?.join(', ') || 'A1'}}</b></p>
-        <p style="margin: 8px 0; font-size: 0.95em;"><span style="color: var(--text-secondary); display: inline-block; width: 80px;">Date:</span> <b>{{lastBooking?.travelDate}}</b></p>
-        <p style="margin: 8px 0; font-size: 0.95em;"><span style="color: var(--text-secondary); display: inline-block; width: 80px;">Mobile:</span> <b>{{lastBooking?.mobileNumber}}</b></p>
+
+      <div
+        style="background: rgba(0,0,0,0.05); padding: 15px; border-radius: 12px; margin-bottom: 25px; text-align: left; border: 1px solid rgba(255,255,255,0.1);">
+        <p style="margin: 8px 0; font-size: 0.95em;"><span
+            style="color: var(--text-secondary); display: inline-block; width: 80px;">Booking ID:</span>
+          <b>{{lastBooking?.id?.substring(0,8) || 'GO-BUS-123'}}</b></p>
+        <p style="margin: 8px 0; font-size: 0.95em;"><span
+            style="color: var(--text-secondary); display: inline-block; width: 80px;">Seats:</span>
+          <b>{{lastBooking?.seats?.join(', ') || 'A1'}}</b></p>
+        <p style="margin: 8px 0; font-size: 0.95em;"><span
+            style="color: var(--text-secondary); display: inline-block; width: 80px;">Date:</span>
+          <b>{{lastBooking?.travelDate}}</b></p>
+        <p style="margin: 8px 0; font-size: 0.95em;"><span
+            style="color: var(--text-secondary); display: inline-block; width: 80px;">Mobile:</span>
+          <b>{{lastBooking?.mobileNumber}}</b></p>
       </div>
-      
-      <button class="btn btn-primary" style="width: 100%; padding: 16px; font-size: 1.05em;" (click)="closeConfirmation(); loadBookings(); activeTab = 'list'">View Boarding Pass</button>
+
+      <button class="btn btn-primary" style="width: 100%; padding: 16px; font-size: 1.05em;"
+        (click)="closeConfirmation(); loadBookings(); activeTab = 'list'">View Boarding Pass</button>
     </div>
   </div>
 
   <!-- FLOATING CHATBOT -->
   <div class="chatbot-container" style="position: fixed; bottom: 40px; right: 40px; z-index: 2000;">
-    <div class="chat-window glass-card" *ngIf="showChat" style="width: 360px; padding: 0; overflow: hidden; margin-bottom: 20px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); border: 2px solid var(--primary-color);">
-      <div style="background: var(--header-grad); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-        <span style="font-weight: 600; font-size: 1.1em;">🤖 Go Bus AI Assistant</span>
-        <button (click)="showChat = false" style="background: none; border: none; color: white; cursor: pointer; font-size: 24px;">×</button>
+    <div class="chat-window glass-card" *ngIf="showChat"
+      style="width: 360px; padding: 0; overflow: hidden; margin-bottom: 20px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); border: 2px solid var(--primary-color);">
+      <div
+        style="background: var(--header-grad); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-weight: 600; font-size: 1.1em;">🤖 Go Bus Buddy</span>
+        <button (click)="showChat = false"
+          style="background: none; border: none; color: white; cursor: pointer; font-size: 24px;">×</button>
       </div>
-      <div style="height: 320px; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; background: rgba(0,0,0,0.02);">
-        <div *ngFor="let msg of chatMessages" [style.align-self]="msg.isBot ? 'flex-start' : 'flex-end'" [style.background]="msg.isBot ? 'white' : 'var(--primary-color)'" [style.color]="msg.isBot ? '#111827' : 'white'" [style.box-shadow]="msg.isBot ? '0 2px 5px rgba(0,0,0,0.05)' : 'none'" style="padding: 12px 18px; border-radius: 18px; max-width: 85%; font-size: 0.9em; line-height: 1.4;">
+      <div
+        style="height: 320px; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; background: rgba(0,0,0,0.02);">
+        <div *ngFor="let msg of chatMessages" [style.align-self]="msg.isBot ? 'flex-start' : 'flex-end'"
+          [style.background]="msg.isBot ? 'white' : 'var(--primary-color)'"
+          [style.color]="msg.isBot ? '#111827' : 'white'"
+          [style.box-shadow]="msg.isBot ? '0 2px 5px rgba(0,0,0,0.05)' : 'none'"
+          style="padding: 12px 18px; border-radius: 18px; max-width: 85%; font-size: 0.9em; line-height: 1.4;">
           {{msg.text}}
         </div>
       </div>
       <div style="padding: 20px; display: flex; gap: 12px;">
-        <input type="text" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Query system..." style="background: white;">
-        <button (click)="sendMessage()" class="btn btn-primary" style="border-radius: 50%; width: 50px; height: 50px; padding: 0;">➤</button>
+        <input type="text" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Query system..."
+          style="background: white;">
+        <button (click)="sendMessage()" class="btn btn-primary"
+          style="border-radius: 50%; width: 50px; height: 50px; padding: 0;">➤</button>
       </div>
     </div>
-    <button class="btn btn-primary" (click)="showChat = !showChat" style="width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 15px 25px rgba(0,0,0,0.2);">💬</button>
+    <button class="btn btn-primary" (click)="showChat = !showChat"
+      style="width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 15px 25px rgba(0,0,0,0.2);">💬</button>
   </div>
 </div>

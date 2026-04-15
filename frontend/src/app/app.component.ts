@@ -16,7 +16,7 @@ import { ThemeService } from './theme.service';
 export class AppComponent implements OnInit {
   activeTab: 'home' | 'book' | 'list' | 'auth' = 'home';
   isSidebarOpen: boolean = false;
-  
+
   // Theme & Auth
   currentUser: User | null = null;
   authMode: 'login' | 'signup' = 'login';
@@ -35,19 +35,19 @@ export class AppComponent implements OnInit {
   mobileNumber: string = '';
   selectedSeats: string[] = [];
   bookedSeats: string[] = [];
-  
+
   // List View
   listDate: string = new Date().toISOString().split('T')[0];
   bookings: Booking[] = [];
-  
+
   // Confirmation
   showConfirmation: boolean = false;
   lastBooking?: Booking;
 
   // Chatbot
   showChat: boolean = false;
-  chatMessages: {text: string, isBot: boolean}[] = [
-    {text: "Namaste! I am your Go Bus AI Assistant. How can I help you today?", isBot: true}
+  chatMessages: { text: string, isBot: boolean }[] = [
+    { text: "Namaste! I am your Go Bus AI Buddy. How can I help you today?", isBot: true }
   ];
   userInput: string = '';
 
@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
     public ts: TranslationService,
     public auth: AuthService,
     public theme: ThemeService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.auth.currentUser$.subscribe(user => this.currentUser = user);
@@ -73,8 +73,8 @@ export class AppComponent implements OnInit {
   // Auth Actions
   handleAuth() {
     if (this.authMode === 'login') {
-      this.auth.login({username: this.authData.username, password: this.authData.password}).subscribe({
-        next: () => { this.activeTab = 'home'; this.authData = {username: '', password: '', email: ''}; },
+      this.auth.login({ username: this.authData.username, password: this.authData.password }).subscribe({
+        next: () => { this.activeTab = 'home'; this.authData = { username: '', password: '', email: '' }; },
         error: (err) => alert("Login failed: " + (err.error?.error || "Invalid credentials"))
       });
     } else {
