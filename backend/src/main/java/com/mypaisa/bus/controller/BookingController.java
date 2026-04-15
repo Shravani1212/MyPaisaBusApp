@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/bookings")
-@CrossOrigin(origins = "http://localhost:4200") // Enable CORS for Angular
+@CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH, RequestMethod.OPTIONS})
 public class BookingController {
 
     @Autowired
@@ -32,7 +32,7 @@ public class BookingController {
     }
 
     @PatchMapping("/{id}/board")
-    public ResponseEntity<Booking> markBoarded(@PathVariable UUID id) {
+    public ResponseEntity<Booking> markBoarded(@PathVariable("id") UUID id) {
         System.out.println("PATCH: Marking ID as boarded: " + id);
         return ResponseEntity.ok(bookingService.markAsBoarded(id));
     }

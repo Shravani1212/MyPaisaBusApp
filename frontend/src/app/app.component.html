@@ -260,7 +260,7 @@
                   <td><span class="badge" [class.badge-success]="b.boarded" style="font-size: 0.75em;">{{b.boarded ? 'Success' : 'Awaiting'}}</span></td>
                   <td style="border-radius: 0 12px 12px 0;">
                     <button *ngIf="!b.boarded" (click)="markBoarded(b)" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.85em;">Confirm Boarding</button>
-                    <button (click)="shareWhatsApp(b)" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85em; margin-left: 10px;">Share Info</button>
+                    <button (click)="shareWhatsApp(b)" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85em; margin-left: 10px;">📞 Share Info</button>
                   </td>
                 </tr>
               </tbody>
@@ -287,6 +287,24 @@
         <p style="font-size: 0.85em; color: var(--text-secondary); margin: 5px 0;">India</p>
       </div>
     </footer>
+  </div>
+
+  <!-- CONFIRMATION MODAL -->
+  <div *ngIf="showConfirmation" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 3000;">
+    <div class="glass-card fade-in" style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border: 2px solid var(--success);">
+      <div style="font-size: 4em; margin-bottom: 10px;">✅</div>
+      <h2 style="color: var(--success); margin-top: 0;">Booked Successfully!</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 20px;">Your journey details are confirmed.</p>
+      
+      <div style="background: rgba(0,0,0,0.05); padding: 15px; border-radius: 12px; margin-bottom: 25px; text-align: left; border: 1px solid rgba(255,255,255,0.1);">
+        <p style="margin: 8px 0; font-size: 0.95em;"><span style="color: var(--text-secondary); display: inline-block; width: 80px;">Booking ID:</span> <b>{{lastBooking?.id?.substring(0,8) || 'GO-BUS-123'}}</b></p>
+        <p style="margin: 8px 0; font-size: 0.95em;"><span style="color: var(--text-secondary); display: inline-block; width: 80px;">Seats:</span> <b>{{lastBooking?.seats?.join(', ') || 'A1'}}</b></p>
+        <p style="margin: 8px 0; font-size: 0.95em;"><span style="color: var(--text-secondary); display: inline-block; width: 80px;">Date:</span> <b>{{lastBooking?.travelDate}}</b></p>
+        <p style="margin: 8px 0; font-size: 0.95em;"><span style="color: var(--text-secondary); display: inline-block; width: 80px;">Mobile:</span> <b>{{lastBooking?.mobileNumber}}</b></p>
+      </div>
+      
+      <button class="btn btn-primary" style="width: 100%; padding: 16px; font-size: 1.05em;" (click)="closeConfirmation(); loadBookings(); activeTab = 'list'">View Boarding Pass</button>
+    </div>
   </div>
 
   <!-- FLOATING CHATBOT -->
