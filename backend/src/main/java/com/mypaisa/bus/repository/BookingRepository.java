@@ -18,6 +18,12 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     @Query("SELECT SUM(size(b.seats)) FROM Booking b WHERE b.mobileNumber = :mobile AND b.travelDate = :date")
     Long countTotalSeatsByMobileAndDate(@Param("mobile") String mobile, @Param("date") LocalDate date);
 
+    @Query("SELECT SUM(size(b.seats)) FROM Booking b WHERE b.mobileNumber = :mobile AND b.travelDate = :date AND b.id <> :excludeId")
+    Long countTotalSeatsByMobileAndDateExcludingId(@Param("mobile") String mobile, @Param("date") LocalDate date, @Param("excludeId") UUID excludeId);
+
     @Query("SELECT b FROM Booking b JOIN b.seats s WHERE b.travelDate = :date AND s IN :seats")
     List<Booking> findConflictingBookings(@Param("date") LocalDate date, @Param("seats") List<String> seats);
+
+    @Query("SELECT b FROM Booking b JOIN b.seats s WHERE b.travelDate = :date AND s IN :seats AND b.id <> :excludeId")
+    List<Booking> findConflictingBookingsExcludingId(@Param("date") LocalDate date, @Param("seats") List<String> seats, @Param("excludeId") UUID excludeId);
 }

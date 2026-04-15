@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/bookings")
-@CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH, RequestMethod.OPTIONS})
+@CrossOrigin(origins = {"http://localhost:4200", "http://127.0.0.1:4200"}, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH, RequestMethod.OPTIONS}, allowedHeaders = "*")
 public class BookingController {
 
     @Autowired
@@ -36,4 +36,10 @@ public class BookingController {
         System.out.println("PATCH: Marking ID as boarded: " + id);
         return ResponseEntity.ok(bookingService.markAsBoarded(id));
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Booking> editBooking(@PathVariable("id") UUID id, @Valid @RequestBody Booking booking) {
+        return ResponseEntity.ok(bookingService.editBooking(id, booking));
+    }
 }
+

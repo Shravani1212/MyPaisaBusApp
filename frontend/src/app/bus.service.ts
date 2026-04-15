@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/environment';
 
 export interface Booking {
   id?: string;
@@ -14,7 +15,7 @@ export interface Booking {
   providedIn: 'root'
 })
 export class BusService {
-  private apiUrl = 'http://localhost:8080/api/bookings';
+  private apiUrl = `${environment.apiUrl}/api/bookings`;
 
   constructor(private http: HttpClient) {}
 
@@ -28,5 +29,9 @@ export class BusService {
 
   markAsBoarded(id: string): Observable<Booking> {
     return this.http.patch<Booking>(`${this.apiUrl}/${id}/board`, {});
+  }
+
+  editBooking(id: string, booking: Booking): Observable<Booking> {
+    return this.http.patch<Booking>(`${this.apiUrl}/${id}`, booking);
   }
 }

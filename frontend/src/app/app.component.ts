@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
   currentUser: User | null = null;
   authMode: 'login' | 'signup' = 'login';
   authData = { username: 'admin', password: 'admin123', email: '' };
+  authError: string = '';
 
   // Search
   search = { from: '', to: '', date: new Date().toISOString().split('T')[0] };
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit {
   mobileNumber: string = '';
   selectedSeats: string[] = [];
   bookedSeats: string[] = [];
+  todaysBookings: Booking[] = [];
 
   // List View
   listDate: string = new Date().toISOString().split('T')[0];
@@ -72,15 +74,30 @@ export class AppComponent implements OnInit {
 
   // Auth Actions
   handleAuth() {
+    this.authError = '';
     if (this.authMode === 'login') {
       this.auth.login({ username: this.authData.username, password: this.authData.password }).subscribe({
-        next: () => { this.activeTab = 'home'; this.authData = { username: '', password: '', email: '' }; },
-        error: (err) => alert("Login failed: " + (err.error?.error || "Invalid credentials"))
+        next: () => {
+          this.activeTab = 'home';
+          this.authData = { username: '', password: '', email: '' };
+          this.authError = '';
+        },
+        error: (err) => {
+          console.error('Login error', err);
+          this.authError = err.error?.error || err.message || 'Invalid credentials';
+        }
       });
     } else {
       this.auth.signup(this.authData).subscribe({
-        next: () => { alert("Signup successful! Please login."); this.authMode = 'login'; },
-        error: (err) => alert("Signup failed: " + (err.error?.error || "Error"))
+        next: () => {
+          alert('Signup successful! Please login.');
+          this.authMode = 'login';
+          this.authError = '';
+        },
+        error: (err) => {
+          console.error('Signup error', err);
+          this.authError = err.error?.error || err.message || 'Error';
+        }
       });
     }
   }
@@ -92,12 +109,19 @@ export class AppComponent implements OnInit {
 
   // Search Actions
   handleBookClick(bus: any) {
-    if (this.auth.getCurrentUser()) {
-      this.selectedBus = bus;
-      this.activeTab = 'book';
-    } else {
+    if (!this.auth.isLoggedIn()) {
+      alert('Please login to book seats.');
       this.activeTab = 'auth';
+      return;
     }
+    this.selectedBus = bus;
+    this.travelDate = this.search.date;
+    this.activeTab = 'book';
+    this.refreshBookedSeats();
+  }
+
+  selectBus(bus: any) {
+    this.handleBookClick(bus);
   }
 
   onSearch() {
@@ -109,18 +133,22 @@ export class AppComponent implements OnInit {
     this.selectedBus = null;
   }
 
-  selectBus(bus: any) {
-    this.selectedBus = bus;
-    this.travelDate = this.search.date;
-    this.activeTab = 'book';
-    this.refreshBookedSeats();
-  }
-
   // Booking Logic (Existing)
   refreshBookedSeats() {
     this.busService.getBookings(this.travelDate).subscribe(data => {
       this.bookedSeats = data.flatMap(b => b.seats);
+      this.todaysBookings = data;
     });
+  }
+
+  isValidMobile(): boolean {
+    return /^[0-9]{10}$/.test(this.mobileNumber);
+  }
+
+  getExistingSeatCount(): number {
+    return this.todaysBookings
+      .filter(b => b.mobileNumber === this.mobileNumber)
+      .reduce((count, booking) => count + booking.seats.length, 0);
   }
 
   toggleSeat(seatId: string) {
@@ -142,13 +170,20 @@ export class AppComponent implements OnInit {
       this.activeTab = 'auth';
       return;
     }
-    if (!this.mobileNumber || this.mobileNumber.length !== 10) {
-      alert("Please enter a valid 10-digit mobile number.");
+    if (!this.isValidMobile()) {
+      alert("Please enter a valid 10-digit mobile number using digits only.");
       return;
     }
+
+    const existingSeatCount = this.getExistingSeatCount();
+    if (existingSeatCount + this.selectedSeats.length > 6) {
+      alert(`You can only book up to 6 seats per mobile number per day. You already have ${existingSeatCount} seats booked for ${this.travelDate}.`);
+      return;
+    }
+
     const booking: Booking = {
       travelDate: this.travelDate,
-      mobileNumber: this.mobileNumber || '9999999999',
+      mobileNumber: this.mobileNumber,
       seats: [...this.selectedSeats],
       boarded: false
     };
@@ -159,12 +194,22 @@ export class AppComponent implements OnInit {
         this.selectedSeats = [];
         this.refreshBookedSeats();
       },
-      error: (err) => alert(err.error?.error || "Booking failed.")
+      error: (err) => {
+        console.error('Booking error', err);
+        const message = err.error?.error || err.message || 'Booking failed.';
+        alert(`Booking failed: ${message}`);
+      }
     });
   }
 
   // Tracking & Share
-  loadBookings() { this.busService.getBookings(this.listDate).subscribe(data => this.bookings = data); }
+  loadBookings() {
+    if (!this.auth.isLoggedIn()) {
+      this.activeTab = 'auth';
+      return;
+    }
+    this.busService.getBookings(this.listDate).subscribe(data => this.bookings = data);
+  }
   markBoarded(booking: Booking) {
     if (booking.id) {
       this.busService.markAsBoarded(booking.id).subscribe({

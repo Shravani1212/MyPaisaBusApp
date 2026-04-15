@@ -27,6 +27,9 @@
       <div *ngIf="!currentUser" class="menu-item" (click)="activeTab = 'auth'">
         <span>🔒</span> {{t('LOGIN_TO_ACCESS') || 'Auth Access'}}
       </div>
+      <div *ngIf="!currentUser" style="padding: 16px 20px; color: var(--text-secondary); font-size: 0.85em; line-height: 1.5; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; margin: 12px 15px 0; background: rgba(255,255,255,0.03);">
+        Please login to access Seat Map and Manifest features.
+      </div>
 
       <div class="menu-item" (click)="showChat = true">
         <span>💬</span> {{t('HELP_CENTER') || 'Support'}}
@@ -179,7 +182,8 @@
               </div>
               <div style="text-align: right;">
                 <p style="font-size: 1.6em; font-weight: 700; margin: 0; color: var(--primary-color);">{{bus.price}}</p>
-                <button class="btn btn-primary" style="margin-top: 15px;" (click)="selectBus(bus)">Book Seats</button>
+                <button *ngIf="currentUser" class="btn btn-primary" style="margin-top: 15px;" (click)="handleBookClick(bus)">Book Seats</button>
+                <button *ngIf="!currentUser" class="btn btn-secondary" style="margin-top: 15px;" (click)="activeTab = 'auth'">Login to Book</button>
               </div>
             </div>
           </div>
@@ -209,6 +213,9 @@
           </div>
           <button class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1em;"
             (click)="handleAuth()">{{authMode === 'login' ? 'Sign In' : 'Join Network'}}</button>
+          <div *ngIf="authError" style="margin-top: 16px; color: #f87171; font-size: 0.95em; text-align: center;">
+            {{authError}}
+          </div>
           <p style="text-align: center; margin-top: 30px; font-size: 0.95em; color: var(--text-secondary);">
             {{authMode === 'login' ? "Don't have an account?" : "Already a member?"}}
             <span (click)="authMode = (authMode === 'login' ? 'signup' : 'login')"
@@ -249,7 +256,8 @@
               <h3 style="margin-top: 0;">Passenger Intelligence</h3>
               <div class="input-group" style="margin-bottom: 25px;">
                 <label>Verified Contact Number <span style="color: var(--danger);">*</span></label>
-                <input type="tel" [(ngModel)]="mobileNumber" placeholder="10-digit Mobile Number" maxlength="10">
+                <input type="tel" inputmode="numeric" pattern="[0-9]*" [(ngModel)]="mobileNumber" placeholder="10-digit Mobile Number" maxlength="10">
+                <small *ngIf="mobileNumber && !isValidMobile()" style="color: #f97316; display: block; margin-top: 8px;">Enter exactly 10 digits.</small>
               </div>
               <div class="glass-card" style="padding: 20px; background: rgba(99, 102, 241, 0.05); margin-bottom: 30px;">
                 <p style="margin: 0; font-size: 0.95em;">Selected: <span

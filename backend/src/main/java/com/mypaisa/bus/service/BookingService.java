@@ -49,6 +49,39 @@ public class BookingService {
         return savedBooking;
     }
 
+    public Booking editBooking(UUID id, Booking booking) {
+        Booking existing = bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        // Validate seat count for this mobile on the selected date, excluding current booking
+        Long totalSeatsAlreadyBooked = bookingRepository.countTotalSeatsByMobileAndDateExcludingId(
+                booking.getMobileNumber(), booking.getTravelDate(), id);
+        long total = (totalSeatsAlreadyBooked != null ? totalSeatsAlreadyBooked : 0) + booking.getSeats().size();
+        logger.debug("Edit booking attempt for {}: existing seats={}, new seats={}, total={}",
+                booking.getMobileNumber(), totalSeatsAlreadyBooked, booking.getSeats().size(), total);
+
+        if (total > 6) {
+            throw new RuntimeException("Maximum 6 seats can be booked per mobile number per day. You have already booked "
+                    + (totalSeatsAlreadyBooked != null ? totalSeatsAlreadyBooked : 0) + " seats.");
+        }
+
+        // Check for seat conflicts excluding current booking
+        List<Booking> conflicts = bookingRepository.findConflictingBookingsExcludingId(
+                booking.getTravelDate(), booking.getSeats(), id);
+        if (!conflicts.isEmpty()) {
+            logger.warn("Booking edit conflict detected for seats: {}", booking.getSeats());
+            throw new RuntimeException("One or more selected seats are already booked.");
+        }
+
+        existing.setTravelDate(booking.getTravelDate());
+        existing.setMobileNumber(booking.getMobileNumber());
+        existing.setSeats(booking.getSeats());
+        existing.setBoarded(booking.isBoarded());
+        Booking updatedBooking = bookingRepository.save(existing);
+        emailService.sendBookingConfirmation(updatedBooking);
+        return updatedBooking;
+    }
+
     public List<Booking> getBookingsForDate(LocalDate date) {
         List<Booking> bookings = bookingRepository.findByTravelDate(date);
         
